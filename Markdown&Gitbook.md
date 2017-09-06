@@ -1,6 +1,6 @@
 # Markdown&GitBook 简单介绍
 
-[TOC]
+[toc]
 
 ## Markdown
 
@@ -12,16 +12,19 @@
 
 ### 优点
 
-* 1. `Markdown`的语法简洁明了、学习容易，而且功能比纯
+*  `Markdown`的语法简洁明了、学习容易，而且功能比纯
      文本更强，因此有很多人用它写博客。
-* 1. 用于编写说明文档，并且以“README.MD”的文件名保存在软件的目录下面。
-* 1. 转换成`HTML`、`PDF`等格式。
-* 1. 随时修改你的文章版本，不必像字处理软件生成若干文件版本导致混乱。
-* 1. 可读、直观、学习成本低。
+*  用于编写说明文档，并且以“README.MD”的文件名保存在软件的目录下面。
+*  转换成`HTML`、`PDF`等格式。
+*  随时修改你的文章版本，不必像字处理软件生成若干文件版本导致混乱。
+*  可读、直观、学习成本低。
+
+**不同客户端对 Markdown 的定制对高阶功能可能有不同的显示效果**
 
 ### 基础语法
 
-**标题**  
+#### 标题:
+
 标题能显示出文章的结构。行首插入1-6个 \# ，每增加一个 \# 表示更深入层次的内容，对应到标题的深度由 1-6 阶。
 
 # Header 1
@@ -36,7 +39,7 @@
 
 ###### Header 6
 
-**列表**
+#### 列表：
 
 * 一级条目1
 * 一级条目2
@@ -52,22 +55,48 @@ _斜体_
 
 **加粗**
 
-**代码块**
+#### 引用:
 
-```java
-Java.util.Date date = new Date();
+> 真的猛士，敢于直面惨淡的人生，敢于正视淋漓的鲜血。 —— 鲁迅
+
+
+#### 代码块:
+
+```python
+@requires_authorization
+class SomeClass:
+    pass
+
+if __name__ == '__main__':
+    # A comment
+    print 'hello world'
 ```
+#### 图片与链接：
+
+![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
 
 在线[Markdown编辑器](https://www.zybuluo.com/mdeditor "Markdown编辑器")
 
+#### 表格：
 
-**角标注**
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
+
+#### 角标注：
 get 10 times more traffic from [Google][1] than from [Yahoo][2] or [MSN][3].  
 
 [1]: http://google.com/        "Google" 
 [2]: http://search.yahoo.com/  "Yahoo Search" 
 [3]: http://search.msn.com/    "MSN Search"
 
+#### 分割线
+
+***
+---
 ## GitBook
 
 ### 简介
@@ -83,7 +112,12 @@ GitBook 是一个基于 Node.js 的命令行工具，可使用 Github/Git 和 Ma
 
 ### 前提条件
 
-Git的安装和配置
+`Git`的安装和配置
+
+```bash
+git config --global user.name  test 
+git config --global user.email test
+```
 
 ### 目录结构
 
@@ -109,7 +143,7 @@ Git的安装和配置
 ```
 
 
-#### 高级扩展
+#### 插件的使用
 
 Book.json
 
@@ -126,15 +160,60 @@ Book.json
      },
 
     //插件安装配置格式
-
-    "plugins": ["myplugin"],
+    "title": "Markdown&GitBook",
+    "description": "Markdown&GitBook",
+    "language": "zh",
+    "plugins": [ "theme-faq","timeline" ,"disqus"],
     "pluginsConfig": {
-        "myPlugin": {
-            "message": "Hello World"
+        "disqus": {
+            "shortName": "webpack-handbook"
         }
      }    
 }
 ```
+#### 发布到gitlab
 
+.gitlab-ci.yml
 
+```yml
+# requiring the environment of NodeJS 4.2.2
+image: node:4.2.2
 
+# add 'node_modules' to cache for speeding up builds
+cache:
+  paths:
+    - node_modules/ # Node modules and dependencies
+
+before_script:
+  - npm install gitbook-cli -g # install gitbook
+  - gitbook fetch latest # fetch latest stable version
+  - gitbook install
+  #- gitbook fetch pre # fetch latest pre-release version
+  #- gitbook fetch 2.6.7 # fetch specific version
+
+# the 'pages' job will deploy and build your site to the 'public' path
+pages:
+  stage: deploy
+  script:
+    - gitbook build . public # build to public path 
+  artifacts:
+    paths:
+      - public
+  only:
+    - master # this job will affect only the 'master' branch
+```
+
+### 本地部署GitBook
+`Node.js`的安装和配置
+
+`GitBook-Cli`的安装配置
+
+```bash
+npm install gitbook-cli -g
+mkdir test
+cd test
+gitbook init    # 初始化
+gitbook install # 下载插件
+gitbook build   # 构建生成HTML
+gitbook serve   # 本地发布  --port指定端口  默认4000
+```
