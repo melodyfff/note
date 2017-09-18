@@ -1,3 +1,5 @@
 # Note Book
-## this is a note.
-## blog backup
+This is a note.
+Blog backup.
+some shell.
+some ...
