@@ -124,6 +124,6 @@ with codecs.open("westworld.txt", "w", "gbk") as f:
 
 ## 接下来就是讲数据导入gephi中进行分析
 对导入后的数据进行平均化和模块化处理
-![img1](../../../../img/3.jpg)  
+![img1](../../../../img/3.png)  
 ## 最后的结果
-![img1](../../../../img/4.jpg)
+![img1](../../../../img/4.png)
