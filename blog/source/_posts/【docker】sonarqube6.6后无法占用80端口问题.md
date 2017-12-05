@@ -134,6 +134,11 @@ exec gosu sonarqube \
   -Dsonar.search.javaOpts="-Xmx512m -Xms256m -Xss1m -Djava.net.preferIPv4Stack=true" \
   "$@"
 ```
+如果需要加入代理
+```sh
+-Dsonar.web.javaAdditionalOpts="$SONARQUBE_WEB_JVM_OPTS -Djava.security.egd=file:/dev/./urandom -Dhttp.proxyHost=172.x.x.x -Dhttp.proxyPort=8080 -Dhttps.proxyHost=172.x.x.x -Dhttps.proxyPort=8080" \
+```
+
 运行实例
 ```bash
 docker run -d --name sonarqube \ 
