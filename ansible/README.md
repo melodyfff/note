@@ -7,12 +7,14 @@
 ├── roles
 │   └── test
 │       ├── files
+│       │   ├── check_file.sh
 │       │   └── test.sh
 │       ├── handlers
 │       │   └── main.yml
 │       ├── tasks
 │       │   └── main.yml
 │       ├── templates
+│       │   ├── proxy.j2
 │       │   └── test.j2
 │       └── vars
 │           └── main.yml
