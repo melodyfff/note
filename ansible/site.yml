@@ -1,0 +1,6 @@
+---
+- name: Install Docker
+  hosts: server
+  remote_user: root
+  roles:
+    - test

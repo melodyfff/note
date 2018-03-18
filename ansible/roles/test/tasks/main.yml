@@ -1,0 +1,14 @@
+- name: test connection
+  ping:
+  register: result
+- name: echo docker info
+  shell: docker info
+- name: copy
+  template: src=test.j2 dest=/home/xinchen/test.conf
+  notify:
+  - restart docker
+- name: copy shell
+  copy: src=test.sh dest=/home/xinchen/ backup=yes
+- name: run shell
+  shell: sh /home/xinchen/test.sh | apt-get update
+  sudo: yes
