@@ -9,6 +9,7 @@
   - restart docker
 - name: copy shell
   copy: src=test.sh dest=/home/xinchen/ backup=yes
+  copy: src=check_file.sh dest=/home/xinchen backup=yes
 - name: run shell
-  shell: sh /home/xinchen/test.sh | apt-get update
+  shell: sh /home/xinchen/test.sh | sh /home/xinchen/check_file.sh
   sudo: yes
