@@ -65,3 +65,53 @@ public class Solution {
     }
 }
 ```
+
+## 从尾到头打印链表
+
+> 输入一个链表，从尾到头打印链表每个节点的值。
+
+```java
+/**
+*    public class ListNode {
+*        int val;
+*        ListNode next = null;
+*
+*        ListNode(int val) {
+*            this.val = val;
+*        }
+*    }
+*
+*/
+// 利用Stack的先入后出进行头尾交换
+import java.util.ArrayList;
+import java.util.Stack;
+public class Solution {
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        ArrayList<Integer> returnList = new ArrayList<>();
+        Stack<Integer> stack = new Stack();
+
+        while(listNode != null){
+            stack.push(listNode.val);
+            listNode = listNode.next;
+        }
+        
+        while(!stack.isEmpty()){
+            returnList.add(stack.pop());
+        }
+        return returnList;
+    }
+}
+
+// 递归
+import java.util.ArrayList;
+public class Solution {
+    ArrayList<Integer> arrayList = new ArrayList<Integer>();
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        if(listNode != null){
+            this.printListFromTailToHead(listNode.next);
+            arrayList.add(listNode.val);
+        }
+        return arrayList;
+    }
+}
+```
