@@ -38,7 +38,7 @@ public class Solution {
     public boolean Find(int target, int [][] array) {
         int row  = array.length - 1;
         int column = 0;
-        while(row >= 0 && column < array[0].length){
+        while(row >= 0 && column < array[row].length){
             if (array[row][column] > target){
                 row--;
             } else if (array[row][column] < target){
