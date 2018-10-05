@@ -38,7 +38,7 @@ sudo apt-get install htop
 
 ### zsh 终端
 
-https://melodyfff.github.io/2018/03/30/%E3%80%90Linux%E3%80%91Ubuntu%E9%85%8D%E7%BD%AEzshell&oh-my-zsh/
+[参考](https://melodyfff.github.io/2018/03/30/%E3%80%90Linux%E3%80%91Ubuntu%E9%85%8D%E7%BD%AEzshell&oh-my-zsh/)
 
 ### tmux 终端分屏
 ```bash
