@@ -10,7 +10,7 @@ date: 2018-09-12
 ### 更换国内源
 > 阿里源: http://mirrors.aliyun.com/ubuntu  
 > 清华源: https://mirrors.tuna.tsinghua.edu.cn/ubuntu/  
->[网易源: http://mirrors.163.com/ubuntu/
+> 网易源: http://mirrors.163.com/ubuntu/
 
 ```bash
 deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
@@ -31,6 +31,7 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 sudo apt-get install openssh-server
 ```
 
+
 ### htop
 ```bash
 sudo apt-get install htop
@@ -38,7 +39,7 @@ sudo apt-get install htop
 
 ### zsh 终端
 
-[参考](https://melodyfff.github.io/2018/03/30/%E3%80%90Linux%E3%80%91Ubuntu%E9%85%8D%E7%BD%AEzshell&oh-my-zsh/)
+> [参考](https://melodyfff.github.io/2018/03/30/%E3%80%90Linux%E3%80%91Ubuntu%E9%85%8D%E7%BD%AEzshell&oh-my-zsh/)
 
 ### tmux 终端分屏
 ```bash
@@ -46,7 +47,7 @@ sudo apt-get install tmux
 ```
 
 ### Docker CE
-https://yq.aliyun.com/articles/110806
+> https://yq.aliyun.com/articles/110806
 
 官方命令安装
 ```bash
@@ -75,7 +76,7 @@ sudo apt-get -y install docker-ce
 # Step 2: 安装指定版本的Docker-CE: (VERSION 例如上面的 17.03.1~ce-0~ubuntu-bionic)
 # sudo apt-get -y install docker-ce=[VERSION]
 ```
-#### 顺手CentOS 7 (使用yum进行安装)
+#### CentOS 7 (使用yum进行安装)
 ```bash
 # step 1: 安装必要的一些系统工具
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
@@ -108,13 +109,10 @@ sudo service docker start
 ## 2.桌面应用
 
 ### 主题
-gnome: https://www.gnome-look.org
-
-Flat Remix DARK GNOME theme: https://www.gnome-look.org/p/1197717/
-
-参考博客1: https://www.cnblogs.com/feipeng8848/p/8970556.html
-
-参考博客2: https://blog.csdn.net/zyqblog/article/details/80152016
+> gnome: https://www.gnome-look.org  
+> Flat Remix DARK GNOME theme: https://www.gnome-look.org/p/1197717/  
+> 参考博客1: https://www.cnblogs.com/feipeng8848/p/8970556.html  
+> 参考博客2: https://blog.csdn.net/zyqblog/article/details/80152016
 
 
 ```bash
@@ -124,10 +122,17 @@ sudo apt-get install gnome-tweak-tool
 sudo apt-get install gnome-shell-extensions
 ```
 
-### deepin-wine(QQ、TIM、微信)
-github地址: https://github.com/wszqkzqk/deepin-wine-ubuntu
+### Chrome
+```bash
+sudo wget http://www.linuxidc.com/files/repo/google-chrome.list -P /etc/apt/sources.list.d/
+wget -q -O - https://dl.google.com/linux/linux_signing_key.pub  | sudo apt-key add -
+sudo apt update
+sudo apt install google-chrome-stable
+```
 
-gitee地址: https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu
+### deepin-wine(QQ、TIM、微信)
+> github地址: https://github.com/wszqkzqk/deepin-wine-ubuntu  
+> gitee地址: https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu
 
 ### Redis Desktop Manager
 
@@ -142,7 +147,7 @@ sudo apt-get -f install
 
 ### Fiddler
 
-http://fiddler.wikidot.com/mono
+> http://fiddler.wikidot.com/mono
 
 ```bash
 # 安装mono
@@ -154,6 +159,9 @@ unzip MonoFiddler-v4484.zip -d Fiddler & cd ./Fiddler
 # 运行
 mono Fiddler.exe
 ```
+
+### WPS
+> http://www.wps.cn/product/wpslinux/
 
 ## 参考链接
 > [ubuntu中文论坛](http://forum.ubuntu.org.cn/)
