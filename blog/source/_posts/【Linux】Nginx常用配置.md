@@ -1,7 +1,7 @@
 ---
 title: 【Linux】Nginx常用配置
 tags: [Linux]
-date: 2018-10-07
+date: 2018-10-15
 ---
 
 > nginx wiki: https://www.nginx.com/resources/wiki
