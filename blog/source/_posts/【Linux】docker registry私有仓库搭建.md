@@ -1,7 +1,7 @@
 ---
 title: 【Linux】docker registry私有仓库搭建
 tags: [Linux]
-date: 2018-10-07
+date: 2018-10-30
 ---
 
 ## docker registry私有仓库搭建
