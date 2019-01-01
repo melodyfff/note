@@ -407,3 +407,5 @@ class Origin implements Serializable{
         System.out.println(b.getOrigin());  // Origin@312b1dae
     }
 ```
+
+当然也可以使用第三方工具序列化如`fastjson`、`jackson`
