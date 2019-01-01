@@ -148,3 +148,262 @@ public static void main(String[] args) {
 我们常见的`Object a=new Object();Object b;b=a;`这种形式的代码复制的是引用，即对象在内存中的地址，a和b对象仍然指向了同一个对象。
 
 因此可以通过`clone()`方法复制一个和原来对象同时独立存在的对象。
+
+### 浅克隆(ShallowClone)
+
+- 1. 实现`Cloneable`接口，否则在调用`clone()`方法时会抛出`CloneNotSupportedException`
+- 2. 覆盖`clone()`方法，修饰符可根据后续需要改为`public`或者依旧为`protected`
+- 3. 调用`super.clone()`即可获取克隆对象。
+
+#### Coffee类
+```java
+public class Coffee implements Cloneable{
+    /** 咖啡名 */
+    private String coffeeName;
+    /** 产地 */
+    private Origin origin;
+
+    public Coffee(String coffeeName, String origin) {
+        this.coffeeName = coffeeName;
+        this.origin = new Origin(origin);
+    }
+
+    @Override
+    public Coffee clone(){
+        Coffee coffee = null;
+        try {
+            coffee =  (Coffee) super.clone();
+        } catch (CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return coffee;
+    }
+
+    public String getCoffeeName() {
+        return coffeeName;
+    }
+
+    public void setCoffeeName(String coffeeName) {
+        this.coffeeName = coffeeName;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+}
+
+class Origin{
+    /** 产地 */
+    private String originName;
+
+    public Origin(String originName) {
+        this.originName = originName;
+    }
+
+    public String getOriginName() {
+        return originName;
+    }
+
+    public void setOriginName(String originName) {
+        this.originName = originName;
+    }
+}
+```
+
+结果如下:
+```java
+    public static void main(String[] args){
+        Coffee a = new Coffee("Latte","China");
+        Coffee b = a.clone();
+
+        System.out.println(a); // Coffee@1d44bcfa
+        System.out.println(b); // Coffee@266474c2
+
+        System.out.println(a.getOrigin()); // Origin@6f94fa3e
+        System.out.println(b.getOrigin()); // Origin@6f94fa3e
+    }
+```
+
+从上可以看出虽然`Coffee`类实现了克隆,但是对于`引用的对象`实际上还是指向的同一个。
+
+### 深克隆(DeepClone)
+#### Coffee类
+```java
+public class Coffee implements Cloneable{
+
+    private String coffeeName;
+
+    private Origin origin;
+
+    public Coffee(String coffeeName, String origin) {
+        this.coffeeName = coffeeName;
+        this.origin = new Origin(origin);
+    }
+
+    /**
+     * 覆盖父类clone()
+     * @return Coffee
+     */
+    @Override
+    public Coffee clone(){
+        Coffee coffee = null;
+        try {
+            coffee =  (Coffee) super.clone();
+            // 深度clone
+            coffee.origin = this.origin.clone();
+        } catch (CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return coffee;
+    }
+
+    public String getCoffeeName() {
+        return coffeeName;
+    }
+
+    public void setCoffeeName(String coffeeName) {
+        this.coffeeName = coffeeName;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+}
+
+class Origin implements Cloneable{
+
+    private String originName;
+
+    public Origin(String originName) {
+        this.originName = originName;
+    }
+    /**
+     * 覆盖父类的clone()
+     * @return Origin.clone()
+     * @throws CloneNotSupportedException CloneNotSupportedException
+     */
+    @Override
+    protected Origin clone() throws CloneNotSupportedException {
+        return (Origin) super.clone();
+    }
+
+    public String getOriginName() {
+        return originName;
+    }
+
+    public void setOriginName(String originName) {
+        this.originName = originName;
+    }
+}
+```
+
+结果如下：
+```java
+    public static void main(String[] args){
+        Coffee a = new Coffee("Latte","China");
+        Coffee b = a.clone();
+
+        System.out.println(a); // Coffee@1d44bcfa
+        System.out.println(b); // Coffee@266474c2
+
+        System.out.println(a.getOrigin()); // Origin@6f94fa3e
+        System.out.println(b.getOrigin()); // Origin@5e481248
+    }
+```
+
+### 序列化的方式实现克隆
+
+> Java语言提供的Cloneable接口和Serializable接口的代码非常简单，它们都是空接口，这种空接口也称为标识接口，标识接口中没有任何方法的定义，其作用是告诉JRE这些接口的实现类是否具有某个功能，如是否支持克隆、是否支持序列化等
+
+```java
+public class Coffee implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+    private String coffeeName;
+
+    private Origin origin;
+
+    public Coffee(String coffeeName, String origin) {
+        this.coffeeName = coffeeName;
+        this.origin = new Origin(origin);
+    }
+    /**
+     * 自定义序列号clone
+     * @return new Coffee clone
+     */
+    public Coffee serialClone(){
+        Coffee coffee = null;
+        try {
+            // ① 将当前对象写入流
+            ByteArrayOutputStream bot = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bot);
+            oos.writeObject(this);
+            
+            // ② 从流中读取对象
+            ByteArrayInputStream bin = new ByteArrayInputStream(bot.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bin);
+            coffee = (Coffee) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return coffee;
+    }
+
+    public String getCoffeeName() {
+        return coffeeName;
+    }
+
+    public void setCoffeeName(String coffeeName) {
+        this.coffeeName = coffeeName;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+}
+
+class Origin implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
+    private String originName;
+
+    public Origin(String originName) {
+        this.originName = originName;
+    }
+    public String getOriginName() {
+        return originName;
+    }
+
+    public void setOriginName(String originName) {
+        this.originName = originName;
+    }
+}
+```
+
+结果如下：
+```java
+    public static void main(String[] args){
+        Coffee a = new Coffee("Latte","China");
+        Coffee b = a.serialClone();
+
+        System.out.println(a);  // Coffee@4dc63996
+        System.out.println(b);  // Coffee@27973e9b
+
+        System.out.println(a.getOrigin());  // Origin@4b1210ee
+        System.out.println(b.getOrigin());  // Origin@312b1dae
+    }
+```
