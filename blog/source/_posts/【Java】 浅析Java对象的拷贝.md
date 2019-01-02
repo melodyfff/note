@@ -27,7 +27,7 @@ int b = a; // b: 6
 b = 7; // b: 7 ,a: 6
 ```
 
-## Oeject的Clone
+## Object的Clone
 #### Coffee类
 ```java
 public class Coffee {
