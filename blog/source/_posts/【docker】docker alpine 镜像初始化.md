@@ -14,9 +14,9 @@ MAINTAINER xcmelody@qq.com
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # 如果在proxy环境下
 # RUN HTTP_PROXY=http://$IP:$PORT apk add --no-cache vim
-run apk update
-run apk add --no-cache vim
-run apk add --no-cache openssh
+RUN apk update
+RUN apk add --no-cache vim
+RUN apk add --no-cache openssh
 
 EXPOSE 22
 ```
