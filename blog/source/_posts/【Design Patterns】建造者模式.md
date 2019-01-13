@@ -43,6 +43,21 @@ object.set...
 
 - 要创建的复杂对象
 
+## 建造者UML类图
+
+```plantuml
+@startuml Builder
+Director o-- Builder :Aggregation >
+Builder <|-- ConcreteBuilder : extend <
+ConcreteBuilder ..> Product: dependency >
+@enduml
+```
+![](https://oscimg.oschina.net/oscnet/66a8297a318ef9e5e058c0a23bc935306c3.jpg)
+
+
+
+
+
 ## 建造者模式实例
 
 #### Product
