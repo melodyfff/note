@@ -1,7 +1,7 @@
 ---
 title: 【Design Patterns】模板方法模式
 tags: [Design Patterns]
-date: 2018-1-14
+date: 2019-1-14
 ---
 
 # 模板方法模式（Template Method）
