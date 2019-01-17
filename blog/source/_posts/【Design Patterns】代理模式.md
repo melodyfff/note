@@ -50,7 +50,9 @@ Proxy ..> RealSubject
 ## 代理模式实例
 
 ### 静态代理
+
 **结构如下:**
+
 ![](../img/static_proxy.png)
 
 **抽象主题角色(公共接口)**
@@ -117,5 +119,72 @@ public class Proxy implements Subject{
 
 ## 动态代理
 
+例如面向横切面编程-`AOP(Aspect Oriented Programming)`中就运用了动态代理机制.
 
+
+**UML**
+
+```plantuml
+@startuml dynamic proxy
+
+class Client{
+
+}
+
+class DynamicProxy{
+
+}
+
+interface InvocationHandler {
+    + Object invoke()
+}
+
+class CustomInvocationHandler{
+    + Object invoke()
+}
+
+interface Advice{
+    + void exec()
+}
+
+class BeforeAdvice{
+    + void exec()    
+}
+
+class AfterAdvice{
+    + void exec()    
+}
+
+interface Subject{
+    + void method()
+}
+
+class RealSubject{
+    + void method()
+}
+
+Subject <|.. RealSubject
+
+Client --> DynamicProxy
+
+Client --> Subject
+
+DynamicProxy --> InvocationHandler
+
+DynamicProxy --> Advice 
+
+Advice <|.. BeforeAdvice
+
+Advice <|.. AfterAdvice
+
+InvocationHandler <|.. CustomInvocationHandler
+
+
+note "Do Something before or after invoke" as N1
+N1 .. Advice
+
+@enduml
+```
+
+![](../img/dynamic_proxy.png)
 
