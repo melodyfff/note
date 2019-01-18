@@ -64,6 +64,7 @@ public interface Subject {
 ```
 
 **具体主题角色(真正的处理对象)**
+
 ```java
 public class RealSubject implements Subject{
     /** 具体要做的事 */
@@ -125,8 +126,7 @@ public class Proxy implements Subject{
 **UML**
 
 ```plantuml
-@startuml dynamic proxy
-
+@startuml
 class Client{
 
 }
@@ -151,9 +151,6 @@ class BeforeAdvice{
     + void exec()    
 }
 
-class AfterAdvice{
-    + void exec()    
-}
 
 interface Subject{
     + void method()
@@ -175,14 +172,11 @@ DynamicProxy --> Advice
 
 Advice <|.. BeforeAdvice
 
-Advice <|.. AfterAdvice
-
 InvocationHandler <|.. CustomInvocationHandler
 
 
-note "Do Something before or after invoke" as N1
+note "Do Something before invoke" as N1
 N1 .. Advice
-
 @enduml
 ```
 
