@@ -7,6 +7,35 @@ date: 2018-5-28
 # 单例模式
 什么是单例？表面意思就是一个实例，只希望有一个这样的实例存在。
 
+> Ensure a class has only one instance,and provide a global point of access to it.
+
+```plantuml
+@startuml singleton
+class Singleton{
+    - static final Singleton singleton = new Singleton()
+    - Singleton()
+    + static Singleton getSingleton()
+}
+
+class Client{
+
+}
+
+
+Client --> Singleton
+
+
+note "通过 Singleton.getSingleton()方式访问" as N1
+N1 .. Client
+
+@enduml
+```
+
+**UML类图:**
+
+![](../img/singleton.png)
+
+
 ## 懒加载（懒汉）
 
 ```java
