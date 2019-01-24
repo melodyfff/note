@@ -298,6 +298,37 @@ public class SingletonFactory {
     }
 ```
 
+## 延迟初始化
+
+延迟初始化(Lazy initialization),当对象第一次被调用的时候才去进行初始化,并且使用完后,不立即回收,等待被再次调用.
+
+**UML类图**
+
+```plantuml
+@startuml lazy initialization
+
+abstract class Product{
+    + doSomething()
+}
+
+class ConcreteProduct{
+    + doSomething()
+}
+
+class ProductFactory{
+    + static final Map<Class,Product> productMap = new HashMap()
+    + static synchrinized <T extends Product> T createProduct(Class<T> cls)
+}
+
+ProductFactory o-- Product
+Product <|-- ConcreteProduct
+
+
+@enduml
+```
+
+![](../img/lazy_factory.png)
+
 ## 实例部分
 ###  简单工厂
 ```java
