@@ -329,6 +329,67 @@ Product <|-- ConcreteProduct
 
 ![](../img/lazy_factory.png)
 
+**ProductFactory**
+```java
+public class ProductFactory {
+    private static final Map<Class, Product> productMap = new HashMap<>(16);
+
+    public static synchronized <T extends Product> T createProduct(Class<T> cls){
+        Product product = null;
+        if (null != productMap.get(cls)){
+            product = productMap.get(cls);
+        } else {
+            try {
+                product = (Product) Class.forName(cls.getName()).newInstance();
+                productMap.put(cls, product);
+            } catch (InstantiationException | ClassNotFoundException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        // noinspection unchecked
+        return (T) product;
+    }
+}
+```
+
+**Product**
+```java
+public abstract class Product {
+    /** 公共方法 */
+    public void commonMethod() {
+        System.out.println("Hello world!");
+    }
+
+    /** 具体方法延迟到子类 */
+    public abstract void method();
+}
+```
+
+**ConcreteProduct**
+```java
+public class ConcreteProduct extends Product {
+
+    @Override
+    public void method() {
+        System.out.println("doing something...");
+    }
+}
+```
+
+**Client**
+```java
+public class Client {
+    public static void main(String[] args) {
+        final Product concreteProduct = ProductFactory.createProduct(ConcreteProduct.class);
+        final Product concreteProduct1 = ProductFactory.createProduct(ConcreteProduct.class);
+
+        System.out.println(concreteProduct.hashCode());
+        System.out.println(concreteProduct1.hashCode());
+    }
+}
+```
+
+
 ## 实例部分
 ###  简单工厂
 ```java
