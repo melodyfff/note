@@ -22,7 +22,7 @@ $ docker pull sonarqube:6.7
 FROM sonarqube:6.7
 ENV SONAR_VERSION=6.7 \
     SONARQUBE_HOME=/opt/sonarqube 
-MAINTAINER xinchen<xinchen@travelsky.com
+MAINTAINER xinchen
 ADD my.sh /bin/
 ADD nginx.conf /bin/
 RUN chmod +x /bin/my.sh
