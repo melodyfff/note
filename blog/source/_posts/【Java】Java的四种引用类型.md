@@ -1,5 +1,5 @@
 ---
-title: 【Java】 【Java】Java的四种引用类型
+title: 【Java】 Java的四种引用类型
 tags: [Java]
 date: 2019-4-2
 ---
