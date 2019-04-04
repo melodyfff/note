@@ -82,7 +82,137 @@ System.out.println(Integer.valueOf(128)==Integer.valueOf(128));  // false
 
 一个复合 享元对象的所有单纯享元对象元素的外蕴状态都是与复合享元对象的外蕴状态相等的；而一个复合享元对象所含有的单纯享元对象的内蕴状态一般是不相等的，不然 就没有使用价值了。
 
-## 享元模式示例
+## 享元模式示例一
+
+**FlyWeight**
+```java
+public interface FlyWeight {
+    void operation(String external);
+}
+```
+
+**ConcreteFlyWeight/UnSharedFlyWeight**
+```java
+public class ConcreteFlyWeight implements FlyWeight {
+
+    private final String name;
+
+    public ConcreteFlyWeight(String name) {
+        this.name = name;
+    }
+
+    /**
+     * 外部状态处理
+     * @param external 外部状态
+     */
+    @Override
+    public void operation( String external) {
+        System.out.println("ConcreteFlyWeight Object = "+ this);
+        System.out.println("Internal Status = " + name);
+        System.out.println("External Status = " + external);
+    }
+}
+
+public class UnSharedFlyWeight implements FlyWeight{
+    /** 使用弱引用，充当缓存，当发生gc的时候直接回收 */
+    private static final WeakHashMap<String, FlyWeight> CACHE = new WeakHashMap<>();
+
+    public void add(String internal,FlyWeight flyWeight){
+        synchronized (CACHE){
+            CACHE.put(internal, flyWeight);
+        }
+    }
+
+    @Override
+    public void operation(final String external) {
+        synchronized (CACHE){
+            CACHE.values().forEach((flyWeight)-> flyWeight.operation(external));
+        }
+    }
+
+    /**
+     * 当前缓存CACHE的大小
+     * @return int
+     */
+    public static int UnSharedFlyWeightInCache(){
+        synchronized (CACHE){
+            return CACHE.size();
+        }
+    }
+}
+```
+
+**FlyWeightFactory**
+```java
+public final class FlyWeightFactory {
+
+    private static Map<String, FlyWeight> pool = new ConcurrentHashMap<>(16);
+
+    private FlyWeightFactory() {
+    }
+
+    /**
+     * 获取复合享元
+     * @param list 内部状态列表
+     * @return UnSharedFlyWeight
+     */
+    public static FlyWeight getCompositeFlyweight(List<String> list){
+        UnSharedFlyWeight unSharedFlyWeight = new UnSharedFlyWeight();
+        for (final String internal:list){
+            unSharedFlyWeight.add(internal,getFlyWeight(internal));
+        }
+        return unSharedFlyWeight;
+    }
+
+    /**
+     * 获取单纯享元
+     * @param internal 内部状态
+     * @return FlyWeight
+     */
+    public static FlyWeight getFlyWeight(String internal) {
+        // 根据key获取value，如果不存在则put
+        return pool.computeIfAbsent(internal, ConcreteFlyWeight::new);
+    }
+
+    public static int poolSize(){
+        return pool.size();
+    }
+
+}
+```
+
+**Client**
+```java
+public class Client {
+    public static void main(String[] args) {
+
+        List<String> internals = Arrays.asList("test1", "test2");
+
+        // 单纯享元
+        final FlyWeight concreteFlyWeight1 = FlyWeightFactory.getFlyWeight(internals.get(0));
+        concreteFlyWeight1.operation("concreteFlyWeight1");
+        final FlyWeight concreteFlyWeight2 = FlyWeightFactory.getFlyWeight(internals.get(0));
+        concreteFlyWeight2.operation("concreteFlyWeight2");
+        System.out.println(concreteFlyWeight1 == concreteFlyWeight2);
+        System.out.println(FlyWeightFactory.poolSize());
+
+        System.out.println("\n\n\n");
+
+        // 复合享元
+        final FlyWeight compositeFlyweight1 = FlyWeightFactory.getCompositeFlyweight(internals);
+        final FlyWeight compositeFlyweight2 = FlyWeightFactory.getCompositeFlyweight(internals);
+        compositeFlyweight1.operation("compositeFlyweight1");
+        compositeFlyweight2.operation("compositeFlyweight2");
+        System.out.println(compositeFlyweight1);
+        System.out.println(compositeFlyweight2);
+        System.out.println(compositeFlyweight1 == compositeFlyweight2);
+        System.out.println(UnSharedFlyWeight.UnSharedFlyWeightInCache());
+    }
+}
+```
+
+
+## 享元模式示例二
 
 模拟一家咖啡馆正常经营的情况
 
