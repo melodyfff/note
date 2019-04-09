@@ -31,6 +31,8 @@ Java中的关键字/修饰符
 
 `volatile`可以用在任何变量前面，但不能用于`final`变量前面，因为`final`型的变量是禁止修改的,也不存在线程安全的问题。
 
+`volatile`变量不能用于约束条件中
+
 
 
 ## Java内存模型 JMM(Java Memory Model)
@@ -72,7 +74,9 @@ Java中的关键字/修饰符
 
 ## volatile的应用场景
 
-### 1.状态量标记
+> 参考： https://blog.csdn.net/vking_wang/article/details/9982709
+
+### 1. 状态量标记
 
 ```java
 public class VolatileDemo {
@@ -127,7 +131,12 @@ Volatile-pool-1 : transform flag to [false]
 Volatile-pool-0 : is running...
 ```
 
-## 2. 单例模式(双重检查锁定DCL)
+### 2. 单例模式(双重检查锁定DCL)
+
+也可称一次性安全发布(`one-time safe publication`)
+
+如果不用`volatile`，则因为内存模型允许所谓的“无序写入”，可能导致失败。——某个线程可能会获得一个未完全初始化的实例。
+
 ```java
 public final class Singleton {
     private volatile static Singleton instance = null;
@@ -146,3 +155,113 @@ public final class Singleton {
     }
 }
 ```
+
+
+### 3. 独立观察（independent observation）
+
+①. 安全使用 `volatile` 的另一种简单模式是：`定期 “发布” 观察结果供程序内部使用`。
+
+如： 假设有一种环境传感器能够感觉环境温度。一个后台线程可能会每隔几秒读取一次该传感器，并更新包含当前文档的` volatile `变量。然后，其他线程可以读取这个变量，从而随时能够看到最新的温度值。
+
+②. 使用该模式的另一种应用程序就是收集程序的`统计信息`。
+
+如下代码展示了身份验证机制如何记忆最近一次登录的用户的名字。将反复使用lastUser 引用来发布值，以供程序的其他部分使用。
+
+```java
+
+public class UserManager {
+    //发布的信息,记录最后登录的用户名
+    public volatile String lastUser; 
+ 
+    public boolean authenticate(String user, String password) {
+        boolean valid = passwordIsValid(user, password);
+        if (valid) {
+            User u = new User();
+            activeUsers.add(u);
+            lastUser = user;
+        }
+        return valid;
+    }
+}
+```
+
+### 4. “volatile bean” 模式
+
+`volatile bean` 模式的基本原理是：很多框架为易变数据的持有者（例如 `HttpSession`）提供了容器，但是放入这些容器中的对象必须是线程安全的。
+
+在` volatile bean `模式中，`JavaBean` 的所有数据成员都是` volatile` 类型的，`并且 getter 和 setter 方法必须非常普通——即不包含约束！`
+
+```java
+
+public class Person {
+    private volatile String firstName;
+    private volatile String lastName;
+    private volatile int age;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+### 5. 开销较低的“读－写锁”策略
+
+如果读操作远远超过写操作，您可以结合使用内部锁和 volatile 变量来减少公共代码路径的开销。
+
+如下显示的线程安全的计数器，使用 `synchronized `确保增量操作是原子的，并使用 `volatile` 保证当前结果的可见性。
+
+如果更新不频繁的话，该方法可实现更好的性能，因为读路径的开销仅仅涉及` volatile `读操作，这通常要优于一个无竞争的锁获取的开销。
+
+```java
+public class Counter {
+
+    /**
+     * 低开销的读写锁技巧
+     * 所有写操作必须在保持this锁的情况下完成
+     * <p>
+     * Employs the cheap read-write lock trick
+     * All mutative operations MUST be done with the 'this' lock held
+     */
+    private volatile int value;
+
+    /**
+     * 读操作，没有synchronized
+     *
+     * @return int
+     */
+    public int getValue() {
+        return value;
+    }
+
+    /**
+     * 写操作，synchronized 使其具备原子性
+     */
+    public synchronized void increment() {
+        value++;
+    }
+}
+```
+
+使用锁进行所有变化的操作，使用 volatile 进行只读操作。
+
+其中，锁一次只允许一个线程访问值，volatile 允许多个线程执行读操作
