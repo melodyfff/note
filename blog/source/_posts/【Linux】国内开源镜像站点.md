@@ -5,6 +5,8 @@ date: 2019-4-27
 ---
 
 # 国内开源镜像站点汇总 
+
+> 转载自： [chinese-opensource-mirror-site](https://gitee.com/gsls200808/chinese-opensource-mirror-site)
 ## 一、站点版
 ### （一）、企业站
 1. 网易：[https://mirrors.163.com/](https://mirrors.163.com/)
