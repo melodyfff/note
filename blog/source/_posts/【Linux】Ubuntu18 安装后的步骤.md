@@ -180,5 +180,16 @@ mono Fiddler.exe
 ### WPS
 > http://www.wps.cn/product/wpslinux/
 
+### 截图 Flameshot
+
+
+```bash
+# 安装
+> sudo apt install flameshot 
+
+# 使用
+> flameshot gui
+```
+
 ## 参考链接
 > [ubuntu中文论坛](http://forum.ubuntu.org.cn/)
