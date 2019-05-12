@@ -289,6 +289,8 @@ public Iterator<S> iterator() {
 
 ## 参考
 
+[我是SPI，我让框架更加优雅了！](https://www.cnblogs.com/chanshuyi/p/deep_insight_java_spi.html)
+
 [The Java™ Tutorials](https://docs.oracle.com/javase/tutorial/ext/basics/spi.html)
 
 [聊聊Dubbo（五）：核心源码-SPI扩展](https://www.jianshu.com/p/7daa38fc9711)
