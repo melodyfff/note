@@ -1,6 +1,6 @@
 ---
 title: 【Java】实体类单元测试覆盖率提升工具
-tags: [Java]
+tags: [java]
 date: 2017-9-28
 ---
 

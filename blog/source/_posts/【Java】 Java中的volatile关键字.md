@@ -1,6 +1,6 @@
 ---
 title: 【Java】 Java中的volatile关键字
-tags: [Java]
+tags: [java]
 date: 2019-4-9
 ---
 

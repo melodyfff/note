@@ -1,6 +1,6 @@
 ---
 title: 【Java】JMM内存模型和JVM内存结构
-tags: [Java]
+tags: [java]
 date: 2019-4-10
 ---
 

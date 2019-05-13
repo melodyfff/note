@@ -1,6 +1,6 @@
 ---
 title: 【Java】 通过反射绕过泛型检查
-tags: [Java]
+tags: [java]
 date: 2019-4-23
 ---
 

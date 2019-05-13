@@ -1,6 +1,6 @@
 ---
 title: 【Java】JVM架构图
-tags: [Java]
+tags: [java]
 date: 2019-4-16
 ---
 

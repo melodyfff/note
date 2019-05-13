@@ -1,6 +1,6 @@
 ---
 title: 【Java】深入理解Java中的spi机制
-tags: [Java]
+tags: [java]
 date: 2019-5-12
 ---
 

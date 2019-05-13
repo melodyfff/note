@@ -1,6 +1,6 @@
 ---
 title: 【Java】 hashcode()和System.identityHashCode()
-tags: [Java]
+tags: [java]
 date: 2019-4-11
 ---
 

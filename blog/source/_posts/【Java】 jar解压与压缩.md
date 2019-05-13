@@ -1,6 +1,6 @@
 ---
 title: 【Java】 jar解压与压缩
-tags: [Java]
+tags: [java]
 date: 2018-9-29
 ---
 
