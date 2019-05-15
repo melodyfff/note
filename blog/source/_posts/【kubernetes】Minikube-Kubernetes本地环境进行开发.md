@@ -1,7 +1,7 @@
 ---
 title: 【kubernetes】Minikube-Kubernetes本地环境进行开发
 tags: [kubernetes]
-date: 2019-4-27
+date: 2019-5-15
 ---
 
 # Minikube-Kubernetes本地环境进行开发
