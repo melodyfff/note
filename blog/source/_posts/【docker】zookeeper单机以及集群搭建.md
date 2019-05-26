@@ -71,7 +71,10 @@ services:
 ```bash
 # 基于docker-compose
 # docker-compose的安装可参考https://docs.docker.com/compose/install 
+# 国内下载地址 ：https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-Linux-x86_64
 # 不同版本的区别可参考https://github.com/docker/docker.github.io/blob/master/compose/compose-file/compose-versioning.md
+# sudo curl -L "https://get.daocloud.io/docker/compose/releases/download/1.24.0/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose
+# sudo chmod +x /usr/local/bin/docker-compose
 # 目前使用的版本为 1.24.0
 
 
