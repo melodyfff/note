@@ -96,6 +96,12 @@ ZSH_THEME_RANDOM_CANDIDATES=(
 )
 ```
 
+## 插件
+```bash
+# ~/.zshrc
+plugins=(git encode64 urltools)
+```
+
 ## 升级
 ```bash
 # By default, you will be prompted to check for upgrades every few weeks. If you would like oh-my-zsh to automatically upgrade itself without prompting you, set the following in your ~/.zshrc:
