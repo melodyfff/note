@@ -1,5 +1,5 @@
 ---
-title: 【Java】 【Java】 Java并发工具类CountDownLatch源码中的例子
+title: 【Java】 Java并发工具类CountDownLatch源码中的例子
 tags: [java]
 date: 2019-6-19
 ---
