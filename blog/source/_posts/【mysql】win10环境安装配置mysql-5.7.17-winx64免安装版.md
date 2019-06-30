@@ -3,64 +3,59 @@ title: 【mysql】win10环境安装配置mysql-5.7.17-winx64免安装版
 tags: [mysql]
 date: 2017-5-14
 ---
-## 用以下命令检查是否安装
-```html
-sudo netstat -tap | grep mysql
-```
-## 安装命令
-```html
-sudo apt-get install MySQL-server mysql-client
-```
-## 查看安装端口情况
-```html
-sudo netstat -tap | grep mysql
-```
-## 进入mysql
-```html
-mysql -u root -p
-```
-# 配置远程访问
-##  编辑mysql配置文件，把其中bind-address = 127.0.0.1注释了
-```html
-vi /etc/mysql/mysql.conf.d/mysqld.cnf 
-```
-## 进入MySQL输入以下
-```html
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-```
-## 重启mysql
-```html
-sudo /etc/init.d/mysql restart
-```
 
-# 打开关闭服务
-```html
-sudo /etc/init.d/mysql start|stop
-```
+## mysql-5.7.17-winx64免安装版，win10环境下安装配置
 
-# 配置文件位置
-```html
-sudo vim /etc/mysql/my.cnf
-```
+- my.ini 配置文件放在bin文件同级目录下
 
-# 其他文件默认位置
 ```html
-/usr/bin                 客户端程序和脚本  
-/usr/sbin                mysqld 服务器  
-/var/lib/mysql           日志文件，数据库  ［重点要知道这个］  
-/usr/share/doc/packages  文档  
-/usr/include/mysql       包含( 头) 文件  
-/usr/lib/mysql           库  
-/usr/share/mysql         错误消息和字符集文件  
-/usr/share/sql-bench     基准程序  
-```
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8
 
-# 卸载
-```html
-sudo apt-get autoremove --purge mysql-server-5.5.43  
-sudo apt-get remove mysql-server  
-sudo apt-get autoremovemysql-server  
-sudo apt-get remove mysql-common  
-dpkg -l | grep ^rc| awk '{print $2}' | sudoxargsdpkg -P  
+
+[mysqld]
+
+#安装目录
+basedir = D:\dev\mysql
+#数据存放目录  data目录是要单独创建的，记得是个空文件夹
+datadir =D:\dev\mysql\data
+#端口
+port = 3306
+
+# 服务端使用的字符集默认为8比特编码的latin1字符集
+character-set-server=utf8
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+# 最大连接数量
+max_connections = 100
+#单个内存表的最大值限定
+max_heap_table_size = 64M
+#为每个线程分配的排序缓冲大小
+sort_buffer_size = 8M
+#join 连表操作的缓冲大小,根据实际业务来设置，默认8M
+join_buffer_size = 32M
+# sql查询缓存，如果提交的查询与几次中的某查询相同，并且在query缓存中存在，则直接返回缓存中的结果
+query_cache_size = 64M
 ```
+- 以管理员身份打开cmd窗口后，将目录切换到你解压文件的bin目录
+- 执行 `mysqld -install` 
+- 继续执行 `mysqld --initialize-insecure --user=mysql;` 
+这一步在data目录中生产一些文件
+
+#### 启动mysql
+-  执行  `net start mysql` 启动服务
+- 默认的root密码是空的。
+- 执行 `mysql -uroot -p`
+
+#### 修改root密码
+- 切换到数据库`mysql`
+- `use mysql`
+
+##### 5.6之前的版本
+`update user set password=password('123') where user='root';`
+
+##### 5.7之后的版本
+查看user表的字段 `desc user;`  
+使用 `set password = password('admin');` 来设置密码。  
+并刷新权限 `flush privileges;`
