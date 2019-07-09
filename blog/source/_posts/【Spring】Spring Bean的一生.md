@@ -1,6 +1,6 @@
 ---
 title: 【Java】Spring Bean的一生
-tags: [java]
+tags: [spring]
 date: 2019-6-24
 ---
 
