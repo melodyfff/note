@@ -10,11 +10,16 @@ date: 2019-7-21
 
 这里介绍一些常用，其他部分可参考官网
 
+LIST:
+- Basic Tools： **jar**，**javap**
+- Java Troubleshooting, Profiling, Monitoring and Management Tools：**jcmd**
+- Monitoring Tools: **jps**,**jstat**
+- Troubleshooting Tools:  **jinfo**,**jstack**,**jhat**,**jmap**
 ---
 
 ## Basic Tools
 
-**jar**
+### **jar**
 
 ```
 ```bash
@@ -50,7 +55,7 @@ jar -xvf source.jar
 jar -cvfM0 source.jar ./              
 ```
 
-**javap**
+### **javap**
 
 ```bash
 # -c 对代码进行反编译，-l 输出行号和本地变量表
@@ -61,7 +66,7 @@ $ javap -c -l $class
 
 ## Java Troubleshooting, Profiling, Monitoring and Management Tools
 
-**jcmd**
+### **jcmd**
 ```bash
 
 # 列出当前运行的所有虚拟机
@@ -90,15 +95,12 @@ $ jcmd [pid] VM.flags
 
 # 获取所有性能相关数据PerfCounter.print
 $ jcmd [pid] PerfCounter.print
-
-
-
 ```
 
 
 ## Monitoring Tools
 
-**jps**
+### **jps**
 
 `jps（JVM Process Status Tool）`可以列出正在运行的虚拟机进程，并显示虚拟机执行主类`（Main Class,main()函数所在的类）`名称以及这些进程的本地虚拟机唯一ID`（Local Virtual Machine Identifier,LVMID）`。
 
@@ -123,7 +125,7 @@ $ jps -q
 
 ```
 
-**jstat**
+### **jstat**
 
 `jstat(JVM statistics Monitoring)`是用于监视虚拟机运行时状态信息的命令，它可以显示出虚拟机进程中的类装载、内存、垃圾收集、JIT编译等运行数据。
 
@@ -151,7 +153,7 @@ $ jstat -compiler [pid] $interval $count
 
 ## Troubleshooting Tools
 
-**jinfo**
+### **jinfo**
 
 `jinfo(JVM Configuration info)`这个命令作用是实时查看和调整虚拟机运行参数。 
 
@@ -168,7 +170,7 @@ $ jinfo -flags LVMID # 不需要args参数，输出所有JVM参数的值
 $ jinfo -sysprops LVMID # 输出系统属性，等同于System.getProperties()
 ```
 
-**jmap**
+### **jmap**
 
 `jmap（Memory Map for Java）`命令用于生成堆转储快照（一般称为heapdump或dump文件）。
 
@@ -187,11 +189,46 @@ jmap的作用并不仅仅是为了获取dump文件，它还可以查询finalize�
  $ jmap [option] <pid>
 
 
+# 打印dump文件,-dump:live只统计存活，并且执行full gc
+$ jmap -dump:format=b,file=<file> <pid>
+
+# 打印等待回收对象信息
+$ jmap -finalizerinfo <pid>
+
+# 显示堆栈详细信息
+$ jamp -heap <pid>
 ```
 
+### **jhat**
 
+jhat（JVM Heap Analysis Tool）命令与jmap搭配使用，来分析jmap生成的堆转储快照。jhat内置了一个微型的HTTP/HTML服务器，生成dump文件的分析结果后，可以在浏览器中查看。
+
+```bash
+# 格式
+$ jhat [option] <dumpfile>
+
+# 打开dump文件
+$ jhat <dumpfile>
+```
+
+### **jstack**
+
+jstack（Stack Trace for Java）命令用于生成虚拟机当前时刻的线程快照（一般称为threaddump或者javacore文件）。
+
+线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是定位线程出现长时间停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等都是导致线程长时间停顿的常见原因。
+
+线程出现停顿的时候通过jstack来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做些什么事情，或者等待着什么资源。
+
+
+```bash
+# 查询当前线程快照
+# -F : 当正常输出请求不被响应时，强制输出线程堆栈
+# -l : 除堆栈外，显示关于锁的附加信息
+# -m : 如果调用到本地方法的话，可以显示C/C++的堆栈
+$ jstack <pid>
+```
 
 ## 参考
 [Orcale - JDK Development Tools](https://docs.oracle.com/javase/8/docs/technotes/tools/)
 
- 
+ [JDK的命令行工具](https://www.cnblogs.com/wade-luffy/p/6017137.html#_label1)
