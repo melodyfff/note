@@ -1,7 +1,7 @@
 ---
 title: 【Java】使用JAVA校验XML Schema
 tags: [java]
-date: 2017-8-27
+date: 2019-7-25
 ---
 
 # 使用JAVA校验XML Schema
