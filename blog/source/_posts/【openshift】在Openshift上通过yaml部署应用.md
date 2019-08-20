@@ -331,6 +331,8 @@ parameters:
 
 ## 3. 进入运行的容器
 
+参考: https://docs.okd.io/latest/dev_guide/ssh_environment.html
+
 ```bash
 
 # 查看pod名
