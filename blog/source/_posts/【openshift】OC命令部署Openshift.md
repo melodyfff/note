@@ -16,6 +16,7 @@ mv openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit/kubectl /usr/local/
 # 生成配置文件,改了hosts之后最好重启一下在进行后面的操作
 cat << EOF >> /etc/hosts
 172.26.252.34 okd.xc
+127.0.0.1 okd.xc
 EOF
 
 # 删除本地可能之前生成的配置文件,并生成配置文件
