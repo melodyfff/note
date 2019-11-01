@@ -55,3 +55,60 @@ RejectedExecutionHandler handler // 如果达到线程界限或者队列容量,�
 - 4.当提交任务数超过maximumPoolSize时，新提交任务由RejectedExecutionHandler处理 
 - 5.当线程池中超过corePoolSize线程，空闲时间达到keepAliveTime时，关闭空闲线程 
 - 6.当设置allowCoreThreadTimeOut(true)时，线程池中corePoolSize线程空闲时间达到keepAliveTime也将关闭 
+
+---
+
+## Executors中常见的ThreadPoolExecutor
+- 单个线程池: **Executors.newSingleThreadExecutor()** || **Executors.newSingleThreadExecutor(ThreadFactory threadFactory)**
+  - new ThreadPoolExecutor(1, 1,
+                                    0L, TimeUnit.MILLISECONDS,
+                                    new LinkedBlockingQueue<Runnable>())
+  - new ThreadPoolExecutor(1, 1,
+                                    0L, TimeUnit.MILLISECONDS,
+                                    new LinkedBlockingQueue<Runnable>(),
+                                    threadFactory)                       
+  - 创建单个线程                                                 
+- 固定线程池: **Executors.newFixedThreadPool(int nThreads)** || **Executors.newFixedThreadPool(int nThreads, ThreadFactory threadFactory)**
+  - new ThreadPoolExecutor(nThreads, nThreads,
+                                      0L, TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>())
+  - new ThreadPoolExecutor(nThreads, nThreads,
+                                      0L, TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>(),
+                                      threadFactory);                                      
+  - 核心线程和最大线程相同,并且不过期                                      
+- 缓存线程池: **Executors.newCachedThreadPool()** || **Executors.newCachedThreadPool(ThreadFactory threadFactory)**
+  - new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                      60L, TimeUnit.SECONDS,
+                                      new SynchronousQueue<Runnable>())
+  - new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                      60L, TimeUnit.SECONDS,
+                                      new SynchronousQueue<Runnable>(),
+                                      threadFactory)
+  - 核心线程为0,并且阻塞队列为SynchronousQueue,按需创建线程,默认过期时间60s                      
+- 调度线程池: **Executors.newScheduledThreadPool(int corePoolSize)** || **Executors.newScheduledThreadPool(int corePoolSize, ThreadFactory threadFactory)** 
+  - new ThreadPoolExecutor(corePoolSize, Integer.MAX_VALUE,
+                                      0, TimeUnit.NANOSECONDS,
+                                      new DelayedWorkQueue())   
+  - new ThreadPoolExecutor(corePoolSize, Integer.MAX_VALUE,
+                                      0, TimeUnit.NANOSECONDS,
+                                      new DelayedWorkQueue(),
+                                      threadFactory)  
+  - 可以调度命令以在给定延迟后运行或定期执行   
+- 窃取线程池: **Executors.newWorkStealingPool()** || **Executors.newWorkStealingPool(int parallelism)** 
+  - new ForkJoinPool
+            (Runtime.getRuntime().availableProcessors(),
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true);
+  - new ForkJoinPool
+            (parallelism,
+             ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+             null, true)
+  - 窃取线程是ForkJoinPool的拓展(分治算法),创建一个拥有多个任务队列的线程池，可以减少连接数，创建当前可用cpu数量的线程来并行执行,适合很耗时间的任务                                                       
+
+---
+
+## 参考阅读
+- [Java Thread Pool – ThreadPoolExecutor Example](https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example/)
+- [ThreadPoolExecutor – Java Thread Pool Example](https://www.journaldev.com/1069/threadpoolexecutor-java-thread-pool-example-executorservice)
+- [Java 多线程（5）：Fork/Join 型线程池与 Work-Stealing 算法](https://segmentfault.com/a/1190000008140126)
