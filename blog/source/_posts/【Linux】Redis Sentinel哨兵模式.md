@@ -285,6 +285,22 @@ docker-compose stop
 docker-compose rm
 ```
 
+## 压力测试
+获取源码
+```bash
+wget -c http://download.redis.io/releases/redis-4.0.14.tar.gz
+tar -zxvf redis-4.0.14.tar.gz && cd redis-4.0.14
+# make获取相关工具
+make
+```
+
+进入`src`目录
+```bash
+redis-benchmark -t set,get -d 10240 -n 100000 -c 1000
+```
+上述命令表示选择执行 `set,get`命令插入大小为`10240byte`的数据100000次,并发请求为1000
+
+
 ## 参考
 [Redis Sentinel Documentation](https://redis.io/topics/sentinel)
 
